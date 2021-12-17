@@ -103,6 +103,7 @@ void Game::update(sf::Time t_deltaTime)
 	{
 		m_window.close();
 	}
+	animateHelo();
 }
 
 /// <summary>
@@ -114,6 +115,25 @@ void Game::render()
 	m_window.draw(m_welcomeMessage);
 	m_window.draw(m_heloSprite);
 	m_window.display();
+}
+
+void Game::animateHelo()
+{
+	int newFrame = 0;
+	m_framecounter +=m_increment;
+	newFrame = static_cast<int>(m_framecounter);
+	newFrame = newFrame % 4;
+	if (newFrame != m_currentFrame)
+	{
+		m_currentFrame = newFrame;
+		//m_heloSprite.setTextureRect(sf::IntRect(0, 0, 180, 64));  // 0
+		//m_heloSprite.setTextureRect(sf::IntRect(0, 64, 180, 64)); // 1
+		//m_heloSprite.setTextureRect(sf::IntRect(0, 128, 180, 64)); // 2
+		//m_heloSprite.setTextureRect(sf::IntRect(0, 192, 180, 64)); // 3
+
+		m_heloSprite.setTextureRect(sf::IntRect(0, 64 * m_currentFrame, 180, 64));
+	}
+
 }
 
 /// <summary>

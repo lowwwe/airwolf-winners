@@ -27,6 +27,7 @@ private:
 	void processKeys(sf::Event t_event);
 	void update(sf::Time t_deltaTime);
 	void render();
+	void animateHelo();
 	
 	void setupFontAndText();
 	void setupSprite();
@@ -38,6 +39,10 @@ private:
 	sf::Texture m_heloTextture; // texture helo
 	sf::Sprite m_heloSprite; // sprite for helo
 	bool m_exitGame; // control exiting game
+
+	int m_currentFrame = 0; // 0,1,2,3
+	float m_framecounter = 0.0f; // counter for frames
+	float m_increment = 0.2f; // frame increment
 
 };
 
