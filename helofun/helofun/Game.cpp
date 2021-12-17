@@ -77,6 +77,10 @@ void Game::processEvents()
 		{
 			processKeys(newEvent);
 		}
+		if (sf::Event::MouseButtonReleased == newEvent.type)
+		{
+			processMouse(newEvent);
+		}
 	}
 }
 
@@ -93,6 +97,34 @@ void Game::processKeys(sf::Event t_event)
 	}
 }
 
+void Game::processMouse(sf::Event t_event)
+{
+	float lenght = 0.0f;
+	sf::Vector2f displacment;
+	
+	if (sf::Mouse::Left == t_event.mouseButton.button)
+	{
+		m_target = sf::Vector2f(t_event.mouseButton.x, t_event.mouseButton.y);
+		displacment.x = static_cast<float>(t_event.mouseButton.x) - m_loaction.x;
+		displacment.y = static_cast<float>(t_event.mouseButton.y) - m_loaction.y;
+		lenght = std::sqrtf((displacment.x * displacment.x) + (displacment.y * displacment.y));
+		displacment = displacment / lenght;
+		m_velocity = displacment;
+		m_velocity = m_velocity * m_speed;
+		m_increment = 0.79;
+		if (static_cast<float>(t_event.mouseButton.x) > m_loaction.x)
+		{
+			m_facing = Direction::Right;
+			m_heloSprite.setScale(1.0f, 1.0f);
+		}
+		else
+		{
+			m_facing = Direction::Left;
+			m_heloSprite.setScale(-1.0f, 1.0f);
+		}
+	}
+}
+
 /// <summary>
 /// Update the game world
 /// </summary>
@@ -104,6 +136,7 @@ void Game::update(sf::Time t_deltaTime)
 		m_window.close();
 	}
 	animateHelo();
+	move();
 }
 
 /// <summary>
@@ -134,6 +167,26 @@ void Game::animateHelo()
 		m_heloSprite.setTextureRect(sf::IntRect(0, 64 * m_currentFrame, 180, 64));
 	}
 
+}
+
+void Game::move()
+{
+	if (m_facing != Direction::None)
+	{
+		m_loaction += m_velocity;
+		m_heloSprite.setPosition(m_loaction);
+		if (m_facing == Direction::Right && m_loaction.x > m_target.x)
+		{
+			m_facing = Direction::None;
+			m_increment = 0.28;
+		}
+		if (m_facing == Direction::Left && m_loaction.x < m_target.x)
+		{
+			m_facing = Direction::None;
+			m_increment = 0.28;
+		}
+		
+	}
 }
 
 /// <summary>

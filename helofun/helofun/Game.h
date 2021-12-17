@@ -11,6 +11,14 @@
 /// </summary>
 #include <SFML/Graphics.hpp>
 
+enum class Direction
+{
+	None,
+	Left,
+	Right
+};
+
+
 class Game
 {
 public:
@@ -25,9 +33,11 @@ private:
 
 	void processEvents();
 	void processKeys(sf::Event t_event);
+	void processMouse(sf::Event t_event);
 	void update(sf::Time t_deltaTime);
 	void render();
 	void animateHelo();
+	void move();
 	
 	void setupFontAndText();
 	void setupSprite();
@@ -43,6 +53,13 @@ private:
 	int m_currentFrame = 0; // 0,1,2,3
 	float m_framecounter = 0.0f; // counter for frames
 	float m_increment = 0.2f; // frame increment
+
+
+	sf::Vector2f m_loaction{ 400.0f,300.0f };// helo location
+	sf::Vector2f m_velocity{ 0.0f,-0.0f };// velocity
+	Direction m_facing = Direction::None;
+	float m_speed = 7.0f;
+	sf::Vector2f m_target;
 
 };
 
